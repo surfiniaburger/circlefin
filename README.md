@@ -23,3 +23,8 @@ User Experience Improvements: Refine the user interface and overall user experie
 Scalability: Optimize the application for scalability as user adoption increases.
 Documentation: Provide comprehensive documentation for developers and users.
 CircleFin is a testament to the potential of decentralized finance, and its future development aims to continue providing users with a secure and flexible financial platform.
+
+
+npm install && npm start
+
+also in another terminal  cd backend && node server.mjs
