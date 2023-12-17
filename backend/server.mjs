@@ -1,34 +1,13 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import fetch from 'node-fetch';
 
-import('node-fetch').then(fetch => {
-    // Now you can use 'fetch' here
-    const express = require('express');
-    const cors = require('cors');
-    const routes = require('./routes');
-  
-    const app = express();
-  
-    // Use CORS middleware
-    app.use(cors());
-    app.use(express.json()); // Parse JSON bodies
-  
-    // Use the routes
-    app.use('/api', routes);
-  
-    // Error handling middleware
-    app.use((err, req, res, next) => {
-      console.error(err.stack);
-      res.status(500).send('Something went wrong!');
-    });
-  
-    const port = process.env.PORT || 3001;
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  }).catch(error => {
-    console.error('Failed to import node-fetch:', error);
-  });
-  
+const app = express();
+
+// Use CORS middleware
 app.use(cors());
+app.use(express.json()); // Parse JSON bodies
 
 // Define a route to forward requests to the Circle API
 app.post('/circle-api/*', async (req, res) => {
@@ -55,8 +34,15 @@ app.post('/circle-api/*', async (req, res) => {
   }
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
+
+const port = process.env.PORT || 3001;
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-

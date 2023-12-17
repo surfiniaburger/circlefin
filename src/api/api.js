@@ -1,7 +1,8 @@
 // api.js
 import { v4 as uuidv4 } from 'uuid';
 
-const API_BASE_URL = 'http://localhost:3002/circle-api';
+const API_BASE_URL = 'http://localhost:3001/circle-api';
+
 let apiKey = process.env.TEST_API_KEY || '';
 
 export const setApiKey = (newApiKey) => {
@@ -65,14 +66,10 @@ export const initializeUserAccount = async (userToken, idempotencyKey, blockchai
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
+      'X-User-Token': userToken,
     },
     body: JSON.stringify({ idempotencyKey, blockchains }),
   };
-
-  // Only include 'x-user-token' in the actual request, not in the preflight request
-  if (userToken) {
-    options.headers['X-User-Token'] = userToken;
-  }
 
   const response = await fetch(url, options);
   const data = await response.json();
@@ -94,11 +91,6 @@ export const checkWalletStatus = async (userId) => {
   const data = await response.json();
 
   return data;
-};
-
-// Function to generate a unique ID
-export const generateUniqueId = () => {
-  return uuidv4();
 };
 
 export const initiateTransaction = async (userToken, userId, destinationAddress, amounts, tokenId, walletId) => {
@@ -127,3 +119,7 @@ export const initiateTransaction = async (userToken, userId, destinationAddress,
   return data;
 };
 
+// Function to generate a unique ID
+export const generateUniqueId = () => {
+  return uuidv4();
+};
